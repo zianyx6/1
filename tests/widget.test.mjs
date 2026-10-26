@@ -6,11 +6,14 @@ const source=await fs.readFile(new URL('../widget.js',import.meta.url),'utf8');
 function setup(){
  const dom=new JSDOM('<!doctype html><html><body><aside><button aria-label="聊天操作">Sidebar</button></aside><header><button class="button-toolbar" aria-label="聊天操作">More</button></header></body></html>',{url:'https://local.test',runScripts:'outside-only'});
  let tick;
+ const mediaListeners=new Set();
+ const media={matches:false,addEventListener(_event,fn){mediaListeners.add(fn);},removeEventListener(_event,fn){mediaListeners.delete(fn);}};
+ dom.window.matchMedia=()=>media;
  dom.window.setInterval=fn=>{tick=fn;return 1;};dom.window.clearInterval=()=>{};
  dom.window.HTMLElement.prototype.getBoundingClientRect=function(){return {x:100,y:56,left:100,top:56,right:128,bottom:84,width:28,height:28};};
  dom.window.eval(source);
  const state=()=>dom.window.__QUOTA_CORNER__;
- return {dom,state,root:()=>dom.window.document.getElementById('quota-corner').shadowRoot,tick:()=>tick(),close:()=>{state()?.destroy();dom.window.close();}};
+ return {dom,state,root:()=>dom.window.document.getElementById('quota-corner').shadowRoot,tick:()=>tick(),systemDark:value=>{media.matches=value;for(const fn of mediaListeners)fn();},close:()=>{state()?.destroy();dom.window.close();}};
 }
 test('quota bars preserve distinct cycles and clamp out-of-range values',()=>{
  const a=setup();try{
@@ -47,7 +50,7 @@ test('anchors before toolbar actions and excludes identically named sidebar acti
  const a=setup();try{
   const slot=a.dom.window.document.getElementById('quota-corner-slot');
   assert.equal(slot.nextElementSibling.closest('header').tagName,'HEADER');
-  assert.equal(a.dom.window.document.getElementById('quota-corner').parentElement.tagName,'HTML');
+  assert.equal(a.dom.window.document.getElementById('quota-corner').parentElement.tagName,'BODY');
   slot.remove();a.tick();assert.equal(slot.isConnected,true);
  }finally{a.close();}
 });
@@ -57,5 +60,20 @@ test('missing heartbeat marks stale data instead of presenting cached values as 
   const now=Date.now();a.dom.window.Date.now=()=>now+13000;a.tick();
   assert.equal(a.root().querySelector('.status').textContent,'监视器已停止');
   assert.equal(a.root().querySelector('.value').textContent,'40%');
+ }finally{a.close();}
+});
+test('client theme changes override OS preference without remounting the widget',async()=>{
+ const a=setup();try{
+  const html=a.dom.window.document.documentElement,host=a.dom.window.document.getElementById('quota-corner');
+  html.setAttribute('data-theme','dark');await Promise.resolve();
+  assert.equal(a.state().snapshot().theme,'dark');
+  html.setAttribute('data-theme','light');await Promise.resolve();
+  assert.equal(a.state().snapshot().theme,'light');
+  a.systemDark(true);assert.equal(a.state().snapshot().theme,'light');
+  assert.equal(a.dom.window.document.getElementById('quota-corner'),host);
+  html.style.colorScheme='dark';await Promise.resolve();
+  assert.equal(a.state().snapshot().theme,'dark');
+  html.style.colorScheme='light';await Promise.resolve();
+  assert.equal(a.state().snapshot().theme,'light');
  }finally{a.close();}
 });
