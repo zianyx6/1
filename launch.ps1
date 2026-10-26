@@ -4,6 +4,13 @@ $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
 $dataRoot = Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'QuotaCorner'
 New-Item -ItemType Directory -Force -Path $dataRoot | Out-Null
+trap {
+  $message=$_.Exception.Message
+  try { [IO.File]::WriteAllText((Join-Path $dataRoot 'launcher-error.log'),$message,[Text.Encoding]::Unicode) } catch {}
+  [Console]::Error.WriteLine($message)
+  exit 1
+}
+. (Join-Path $root 'runtime-utils.ps1')
 $config = Get-Content -LiteralPath (Join-Path $root 'machine.json') -Raw | ConvertFrom-Json
 if (-not (Test-Path -LiteralPath $config.node -PathType Leaf)) { throw 'Node.js path is unavailable. Run install.ps1 again.' }
 $lockPath = Join-Path $dataRoot 'runtime.lock'
@@ -24,12 +31,7 @@ foreach ($candidate in 9335..9345) {
 }
 if (-not $port) {
   if (Get-Process -Name ChatGPT -ErrorAction SilentlyContinue) { throw 'Please exit ChatGPT normally, then use the QuotaCorner shortcut. The running client has no local debugging endpoint.' }
-  $desktopPath = $config.desktop
-  if (-not (Test-Path -LiteralPath $desktopPath -PathType Leaf)) {
-    $package = Get-AppxPackage -Name OpenAI.Codex | Select-Object -First 1
-    if ($package) { $desktopPath = Join-Path $package.InstallLocation 'app/ChatGPT.exe' }
-  }
-  if (-not (Test-Path -LiteralPath $desktopPath -PathType Leaf)) { throw 'ChatGPT executable is unavailable. Run install.ps1 again.' }
+  $desktopPath = Resolve-QuotaCornerDesktop -ConfiguredPath $config.desktop
   foreach ($candidate in 9335..9345) {
     $listener = [Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback,$candidate)
     try { $listener.Start(); $port=$candidate; break } catch {} finally { $listener.Stop() }
@@ -42,7 +44,10 @@ if (-not $port) {
   }
   if (-not $ready) { throw 'ChatGPT local debugging endpoint did not become ready.' }
 }
-$cliPath = $config.cli
-if (-not (Test-Path -LiteralPath $cliPath -PathType Leaf)) { throw 'Codex CLI is unavailable. Run install.ps1 again.' }
+$desktopPath = Resolve-QuotaCornerDesktop -ConfiguredPath $config.desktop
+$cliPath = Resolve-QuotaCornerRuntimeCli -ConfiguredCli $config.cli -DesktopPath $desktopPath -DataRoot $dataRoot
 $arguments = @('"' + (Join-Path $root 'main.mjs') + '"','--port',"$port",'--cli','"'+$cliPath+'"','--data','"'+$dataRoot+'"')
-Start-Process -FilePath $config.node -ArgumentList $arguments -WindowStyle Hidden -RedirectStandardOutput (Join-Path $dataRoot 'runtime.log') -RedirectStandardError (Join-Path $dataRoot 'error.log') | Out-Null
+$backend=Start-Process -FilePath $config.node -ArgumentList $arguments -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $dataRoot 'runtime.log') -RedirectStandardError (Join-Path $dataRoot 'error.log')
+Start-Sleep -Milliseconds 800
+if($backend.HasExited){throw "QuotaCorner backend exited. See $(Join-Path $dataRoot 'error.log')"}
+Remove-Item -LiteralPath (Join-Path $dataRoot 'launcher-error.log') -Force -ErrorAction SilentlyContinue

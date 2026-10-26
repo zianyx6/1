@@ -36,7 +36,7 @@ pwsh -NoProfile -File .\install.ps1
 - 不修改客户端安装文件、模型配置或登录文件；无自动续跑、第三方预测请求或自动更新。
 - 调试接口仅限本机回环地址。组件保留本机 CDP 的访问能力，应只运行可信源码。
 - 只在自己的目录保存启动配置和运行记录；会话统计从日志重建，收起状态保存在客户端 quota-corner-ui-v1 存储键中。
-- 非官方组件，客户端更新后可能需要适配。CLI 位置变化时重新运行安装脚本。
+- 非官方组件，客户端更新后可能需要适配。启动时会重新发现当前客户端，并自动补回缺失或过期的 Store CLI 副本；自定义 CLI 路径失效时重新运行安装脚本。
 - 普通 ChatGPT 聊天无法提供 Codex 会话 Token 时显示横线，账户额度仍可显示。
 
 ## 卸载
@@ -64,9 +64,8 @@ pwsh -NoProfile -File .\scripts\build-release.ps1
 - 图标默认插入顶部工具栏的“聊天操作 / Chat actions / Conversation actions”按钮左边。未找到匹配按钮时回退到右上角。
 - 面板提示“监视器已停止”：从专用快捷方式重连；若客户端没有 CDP，先正常退出再通过该快捷方式打开。
 - 查询失败保留上次结果并标记过期；官方 API 的统计日期可能滞后，本地会话 Token 不代表跨设备账户总量。
-- 日志位于 `%LOCALAPPDATA%\QuotaCorner\runtime.log` 与 `error.log`。反馈时请只提供脱敏错误，不附会话原始日志或登录文件。
+- 启动器失败时会在弹窗中显示具体原因，同时写入 `%LOCALAPPDATA%\QuotaCorner\launcher-error.log`；后台日志为同目录的 `runtime.log` 与 `error.log`。反馈时请只提供脱敏错误，不附会话原始日志或登录文件。
 
 ## License
 
 MIT。采集模块保留原项目许可证与来源声明；其余代码使用本仓库根目录的 LICENSE。
-

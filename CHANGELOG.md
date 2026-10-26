@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Restore a missing Store CLI mirror automatically when launching; refresh it from the current desktop version.
+- Save launcher failures to launcher-error.log and show the actual error in the shortcut dialog.
+
 - Follow the desktop client's semantic colors, fonts and shadows, including custom themes.
 - Update immediately when the client changes theme; use the OS preference only as a fallback.
 - Keep the floating panel outside toolbar clipping while inheriting body-level theme tokens.
