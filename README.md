@@ -16,10 +16,10 @@ Collapsible quota progress bars for the Windows ChatGPT / Codex desktop client. 
 
 需要 Windows 10/11、已经登录的 ChatGPT / Codex 桌面客户端、Node.js 22+；推荐 PowerShell 7。无需 `npm install` 即可运行，npm 依赖仅用于开发测试。
 
-从 [本仓库](https://github.com/zianyx6/1) 的 Code → Download ZIP 下载并解压，或执行：
+从 [本仓库](https://github.com/zianyx6/QuotaCorner) 的 Code → Download ZIP 下载并解压，或执行：
 
 ```powershell
-git clone https://github.com/zianyx6/1.git QuotaCorner
+git clone https://github.com/zianyx6/QuotaCorner.git
 cd QuotaCorner
 pwsh -NoProfile -File .\install.ps1
 ```
@@ -69,3 +69,4 @@ pwsh -NoProfile -File .\scripts\build-release.ps1
 ## License
 
 MIT。采集模块保留原项目许可证与来源声明；其余代码使用本仓库根目录的 LICENSE。
+
