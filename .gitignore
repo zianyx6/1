@@ -1,0 +1,9 @@
+node_modules/
+dist/
+machine.json
+state.json
+runtime.lock
+*.log
+*.tmp
+token-counter.json
+*.local.*

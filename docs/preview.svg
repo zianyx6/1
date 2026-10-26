@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="370" viewBox="0 0 600 370">
+ <rect width="600" height="370" rx="18" fill="#f3f5f9"/>
+ <text x="30" y="38" font-family="Segoe UI,sans-serif" font-size="16" fill="#4d5b70">QuotaCorner</text>
+ <circle cx="477" cy="30" r="10" fill="none" stroke="#2195e8" stroke-width="3"/>
+ <circle cx="477" cy="30" r="6" fill="none" stroke="#9b71ed" stroke-width="2"/>
+ <text x="504" y="35" font-family="Segoe UI,sans-serif" font-size="20" fill="#8792a4">···</text>
+ <rect x="294" y="58" width="266" height="284" rx="17" fill="#fff" stroke="#dce2eb"/>
+ <g font-family="Segoe UI,Microsoft YaHei,sans-serif">
+  <text x="310" y="84" font-size="13" font-weight="600" fill="#243044">用量</text><circle cx="344" cy="80" r="3" fill="#32af88"/>
+  <text x="354" y="84" font-size="10" fill="#718096">剩余额度</text><text x="533" y="84" font-size="17" fill="#718096">−</text>
+  <text x="310" y="123" font-size="11" fill="#718096">五小时额度</text><text x="509" y="123" font-size="20" font-weight="600" fill="#2195e8">68%</text>
+  <rect x="310" y="135" width="234" height="7" rx="4" fill="#eceff3"/><rect x="310" y="135" width="159" height="7" rx="4" fill="#2195e8"/>
+  <text x="310" y="158" font-size="10" fill="#718096">今天 18:00 重置</text>
+  <text x="310" y="191" font-size="11" fill="#718096">每周额度</text><text x="509" y="191" font-size="20" font-weight="600" fill="#9b71ed">42%</text>
+  <rect x="310" y="203" width="234" height="7" rx="4" fill="#eceff3"/><rect x="310" y="203" width="98" height="7" rx="4" fill="#9b71ed"/>
+  <text x="310" y="226" font-size="10" fill="#718096">周一 09:00 重置</text>
+  <path d="M310 245H544" stroke="#e0e5ed"/>
+  <text x="310" y="268" font-size="10" fill="#718096">本会话 Token</text><text x="434" y="268" font-size="10" fill="#718096">缓存命中率</text>
+  <text x="310" y="289" font-size="14" font-weight="600" fill="#243044">12.8万</text><text x="434" y="289" font-size="14" font-weight="600" fill="#243044">92.4%</text>
+  <text x="310" y="323" font-size="10" fill="#718096">演示数据</text><text x="489" y="323" font-size="10" fill="#718096">30 秒刷新</text>
+  <text x="30" y="156" font-size="22" font-weight="600" fill="#243044">额度，一眼可见。</text><text x="30" y="186" font-size="12" fill="#718096">点击工具栏图标展开</text><text x="30" y="208" font-size="12" fill="#718096">不修改客户端安装文件</text>
+ </g>
+</svg>

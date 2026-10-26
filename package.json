@@ -1,0 +1,14 @@
+{
+  "name": "quotacorner",
+  "version": "0.1.0",
+  "description": "Collapsible quota progress bars inside the Windows ChatGPT / Codex desktop client",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test tests/widget.test.mjs tests/cdp.test.mjs",
+    "check": "node --check main.mjs && node --check cdp.mjs && node --check widget.js"
+  },
+  "devDependencies": { "jsdom": "26.1.0" }
+}
