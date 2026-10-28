@@ -1,3 +1,19 @@
+function New-QuotaCornerIcon {
+  param([string]$DesktopPath,[string]$Destination)
+  $packageRoot=Split-Path -Parent (Split-Path -Parent $DesktopPath)
+  $png=Join-Path $packageRoot 'assets/Square44x44Logo.targetsize-256_altform-unplated.png'
+  if(-not(Test-Path -LiteralPath $png -PathType Leaf)){return $null}
+  $bytes=[IO.File]::ReadAllBytes($png)
+  $stream=[IO.File]::Open($Destination,[IO.FileMode]::Create,[IO.FileAccess]::Write)
+  $writer=[IO.BinaryWriter]::new($stream)
+  try{
+    $writer.Write([uint16]0);$writer.Write([uint16]1);$writer.Write([uint16]1)
+    $writer.Write([byte]0);$writer.Write([byte]0);$writer.Write([byte]0);$writer.Write([byte]0)
+    $writer.Write([uint16]1);$writer.Write([uint16]32);$writer.Write([uint32]$bytes.Length);$writer.Write([uint32]22);$writer.Write([byte[]]$bytes)
+  }finally{$writer.Dispose()}
+  return $Destination
+}
+
 function Resolve-QuotaCornerDesktop {
   param([string]$ConfiguredPath)
   $candidates=@()

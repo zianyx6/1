@@ -27,7 +27,8 @@ $shortcut.TargetPath=Join-Path $env:SystemRoot 'System32/wscript.exe'
 $shortcut.Arguments='"'+(Join-Path $installRoot 'launch.vbs')+'"'
 $shortcut.WorkingDirectory=$installRoot
 $shortcut.Description='ChatGPT quota progress bars'
-$shortcut.IconLocation=$DesktopPath+',0'
+$stableIcon=New-QuotaCornerIcon -DesktopPath $DesktopPath -Destination (Join-Path $installRoot 'QuotaCorner.ico')
+$shortcut.IconLocation=$(if($stableIcon){$stableIcon+',0'}else{$DesktopPath+',0'})
 $shortcut.Save()
 Write-Host "Installed: $installRoot"
 Write-Host "Shortcut: $shortcutPath"
