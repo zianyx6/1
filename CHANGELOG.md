@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.1.1 — 2026-10-28
+
+- Adapt desktop discovery for Windows client 26.1023.6123.0: prefer a running client, then the registered Store package, before an old configured path.
+- Refresh the official CLI mirror from the newly selected client instead of retaining an older installed package.
+- Validation: automatic tests and runtime-copy checks; full live UI verification on 26.1023.6123.0 is pending a normal restart through the QuotaCorner shortcut because the current client has no CDP endpoint.
 
 - Restore a missing Store CLI mirror automatically when launching; refresh it from the current desktop version.
 - Save launcher failures to launcher-error.log and show the actual error in the shortcut dialog.

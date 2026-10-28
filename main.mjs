@@ -49,7 +49,7 @@ let timer;
 async function shutdown(){if(stopped)return;stopped=true;clearInterval(timer);for(const s of sessions.values()){try{await s.evaluate('window.__QUOTA_CORNER__?.destroy()');}catch{}s.close();}await collector.stop();await tracker.stop();await fs.rm(lockPath,{force:true});process.exit(0);}
 process.on('SIGTERM',shutdown);process.on('SIGINT',shutdown);
 try{
- await fs.writeFile(path.join(stateRoot,'state.json'),JSON.stringify({pid:process.pid,port,version:'0.1.0',root},null,2));
+ await fs.writeFile(path.join(stateRoot,'state.json'),JSON.stringify({pid:process.pid,port,version:'0.1.1',root},null,2));
  await collector.start();
  if(collector.view.officialModelProvidersResolved)tracker.setOfficialModelProviders(collector.view.officialModelProviders);
  await tracker.start();await cycle();timer=setInterval(cycle,2000);

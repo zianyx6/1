@@ -1,6 +1,6 @@
 {
   "name": "quotacorner",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Collapsible quota progress bars inside the Windows ChatGPT / Codex desktop client",
   "private": true,
   "type": "module",
