@@ -4,7 +4,7 @@
 
 - Windows client 26.1027.3384.0: refreshed local executable paths, CLI mirror and shortcut icon; real subscription quota query succeeded.
 - Seven JavaScript tests and Windows PowerShell runtime recovery tests passed.
-- Live widget placement/theme validation remains pending: the current client was launched without CDP. Exit normally and reopen through QuotaCorner for the final UI check.
+- Live verification on 26.1027.3384.0 passed after reopening via QuotaCorner: toolbar placement, real quota/Token/cache metrics, automatic refresh, collapse/expand and light/dark/custom theme synchronization. Backend error log was empty.
 
 
 ## Unreleased
