@@ -1,5 +1,12 @@
 # Changelog
 
+## Compatibility check — 2026-10-30
+
+- Windows client 26.1027.3384.0: refreshed local executable paths, CLI mirror and shortcut icon; real subscription quota query succeeded.
+- Seven JavaScript tests and Windows PowerShell runtime recovery tests passed.
+- Live widget placement/theme validation remains pending: the current client was launched without CDP. Exit normally and reopen through QuotaCorner for the final UI check.
+
+
 ## Unreleased
 
 - Cache the desktop client's official icon as a standalone ICO in the installation directory, avoiding blank shortcut icons when Store version paths change.
